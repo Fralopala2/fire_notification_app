@@ -72,25 +72,41 @@ class _FireMapScreenState extends State<FireMapScreen> {
               service.lat,
               service.lng,
             ) / 1000;
+            final mapsUrl = 'https://www.google.com/maps/dir/?api=1&destination=${service.lat},${service.lng}';
             return ListTile(
               title: Text(service.name),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(service.address),
-                  if (service.phoneNumber != null)
-                    GestureDetector(
-                      onTap: () async {
-                        final uri = Uri(scheme: 'tel', path: service.phoneNumber);
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri);
-                        }
-                      },
-                      child: Text(
-                        'Tel: ${service.phoneNumber}',
-                        style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.directions, color: Colors.green),
+                        tooltip: 'Cómo llegar',
+                        onPressed: () async {
+                          final uri = Uri.parse(mapsUrl);
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri, mode: LaunchMode.externalApplication);
+                          }
+                        },
                       ),
-                    ),
+                      const SizedBox(width: 12),
+                      if (service.phoneNumber != null)
+                        GestureDetector(
+                          onTap: () async {
+                            final uri = Uri(scheme: 'tel', path: service.phoneNumber);
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri);
+                            }
+                          },
+                          child: Text(
+                            'Tel: ${service.phoneNumber}',
+                            style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+                          ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
               trailing: Text('${distanceKm.toStringAsFixed(1)} km'),
