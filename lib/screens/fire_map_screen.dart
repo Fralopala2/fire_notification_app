@@ -19,7 +19,7 @@ class _FireMapScreenState extends State<FireMapScreen> {
   List<NearbyService> _nearbyServices = [];
   bool _loadingServices = false;
   String _selectedServiceType = 'fire_station';
-  double _searchRadius = 5000; // Default radius in meters
+  double _searchRadius = 10000; // Default radius in meters
   final Map<String, String> _serviceTypes = {
     'Bomberos': 'fire_station',
     'Policia': 'police',
@@ -66,6 +66,12 @@ class _FireMapScreenState extends State<FireMapScreen> {
           itemCount: services.length,
           itemBuilder: (context, index) {
             final service = services[index];
+            final distanceKm = Geolocator.distanceBetween(
+              position.latitude,
+              position.longitude,
+              service.lat,
+              service.lng,
+            ) / 1000;
             return ListTile(
               title: Text(service.name),
               subtitle: Column(
@@ -87,7 +93,7 @@ class _FireMapScreenState extends State<FireMapScreen> {
                     ),
                 ],
               ),
-              trailing: Text('${service.lat.toStringAsFixed(4)}, ${service.lng.toStringAsFixed(4)}'),
+              trailing: Text('${distanceKm.toStringAsFixed(1)} km'),
             );
           },
         ),
@@ -102,7 +108,7 @@ class _FireMapScreenState extends State<FireMapScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Reportar Incendio Forestal'),
+            Text('SOS REPORT'),
           ],
         ),
         centerTitle: true,

@@ -16,7 +16,7 @@ class NearbyService {
   NearbyService({required this.name, required this.address, required this.lat, required this.lng, this.phoneNumber});
 }
 
-Future<List<NearbyService>> searchNearbyServices(double lat, double lng, String serviceType, {int radius = 5000}) async {
+Future<List<NearbyService>> searchNearbyServices(double lat, double lng, String serviceType, {int radius = 10000}) async {
   final url = Uri.parse(
   'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=$radius&type=$serviceType&key=$googleApiKey'
   );
