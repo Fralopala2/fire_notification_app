@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Get API key from environment variables
-final GOOGLE_API_KEY = dotenv.env['GOOGLE_MAPS_API_KEY'] ?? '';
+final String googleApiKey = dotenv.env['GOOGLE_MAPS_API_KEY'] ?? '';
 
 class NearbyService {
   final String name;
@@ -18,7 +18,7 @@ class NearbyService {
 
 Future<List<NearbyService>> searchNearbyServices(double lat, double lng, String serviceType, {int radius = 5000}) async {
   final url = Uri.parse(
-    'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=$radius&type=$serviceType&key=$GOOGLE_API_KEY'
+  'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&radius=$radius&type=$serviceType&key=$googleApiKey'
   );
   final response = await http.get(url);
   if (response.statusCode == 200) {
@@ -52,7 +52,7 @@ Future<List<NearbyService>> searchNearbyServices(double lat, double lng, String 
 
 Future<String?> fetchPlacePhoneNumber(String placeId) async {
   final url = Uri.parse(
-    'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=formatted_phone_number&key=$GOOGLE_API_KEY'
+  'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=formatted_phone_number&key=$googleApiKey'
   );
   final response = await http.get(url);
   if (response.statusCode == 200) {

@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:label="fire_notification_app"
+    android:label="SOSIncendio"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
