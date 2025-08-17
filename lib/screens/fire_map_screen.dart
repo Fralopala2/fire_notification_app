@@ -16,6 +16,7 @@ class _FireMapScreenState extends State<FireMapScreen> {
   LatLng? _selectedLocation;
   final Set<Marker> _markers = {};
   Position? _currentPosition;
+  bool _locationInitialized = false;
   List<NearbyService> _nearbyServices = [];
   bool _loadingServices = false;
   String _selectedServiceType = 'fire_station';
@@ -35,12 +36,16 @@ class _FireMapScreenState extends State<FireMapScreen> {
 
   void _initializeLocation() async {
     _currentPosition = await getCurrentLocation();
-    if (_currentPosition != null && _mapController != null) {
+    if (_currentPosition != null && _mapController != null && !_locationInitialized) {
       _mapController!.animateCamera(
-        CameraUpdate.newLatLng(
+        CameraUpdate.newLatLngZoom(
           LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+          15,
         ),
       );
+      setState(() {
+        _locationInitialized = true;
+      });
     }
   }
 
@@ -201,7 +206,12 @@ class _FireMapScreenState extends State<FireMapScreen> {
             ),
           Expanded(
             child: GoogleMap(
-              initialCameraPosition: CameraPosition(target: LatLng(0, 0), zoom: 2),
+              initialCameraPosition: CameraPosition(
+                target: _currentPosition != null
+                    ? LatLng(_currentPosition!.latitude, _currentPosition!.longitude)
+                    : LatLng(0, 0),
+                zoom: _currentPosition != null ? 15 : 2,
+              ),
               onMapCreated: (GoogleMapController controller) {
                 _mapController = controller;
                 _initializeLocation();
