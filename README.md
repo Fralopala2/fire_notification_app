@@ -4,7 +4,7 @@
   <p>
     <b>Report wildfires and find emergency services nearby</b><br>
     <img src="https://img.shields.io/badge/Flutter-3.9-blue?logo=flutter" />
-    <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-green?logo=android" />
+    <img src="https://img.shields.io/badge/Platform-Android-green?logo=android" />
   </p>
 </div>
 
@@ -45,16 +45,17 @@
   <summary>Click to expand!</summary>
   
   ### Splash Screen
-  ![Splash Screen](assets/screenshots/splash.png)
-  
+  <img width="417" height="900" alt="splash" src="https://github.com/user-attachments/assets/cd42cdf2-d91e-4203-91a4-7b3acb0b13bc" />
+
   ### Home Screen
-  ![Home Screen](assets/screenshots/home.png)
-  
+  <img width="413" height="904" alt="home" src="https://github.com/user-attachments/assets/f146e865-aa7d-46f6-ab74-9bbfae2c1e84" />
+
   ### Map Screen
-  ![Map Screen](assets/screenshots/map.png)
-  
+  <img width="423" height="903" alt="map" src="https://github.com/user-attachments/assets/eb2cb3c9-df33-43fb-b6be-1d70c1305c1d" />
+
   ### Service Details
-  ![Service Details](assets/screenshots/details.png)
+  <img width="419" height="904" alt="details" src="https://github.com/user-attachments/assets/403b503f-0373-4a1f-b110-2d4ed0fbe6cf" />
+
 </details>
 
 ---
