@@ -1,6 +1,6 @@
 <div align="center>
   <img src="assets/images/logo.png" alt="Fire Notification App Logo" width="120" />
-  <h1>🔥 Fire Notification App</h1>
+  <h1>🔥 SOS Wildfire Report</h1>
   <p>
     <b>Report wildfires and find emergency services nearby</b><br>
     <img src="https://img.shields.io/badge/Flutter-3.9-blue?logo=flutter" />
@@ -12,12 +12,17 @@
 
 ## 🚀 Features
 
-- Geolocate user and show current position on map
+- Geolocate user and center map automatically on first app launch
 - Tap to mark a fire or incident location
 - Search for nearby emergency services (firefighters, police, hospitals, civil protection)
 - Adjustable search radius (1-20 km)
 - View service details and call directly from the app
+- Show distance in kilometers to each service from selected point
+- Button with direction icon to open Google Maps and get route to service
 - Modern splash screen with custom logo
+- Only available for Android
+- Sensitive data (API keys) managed with environment variables
+- Custom non-commercial license
 
 ---
 
