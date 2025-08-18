@@ -4,9 +4,12 @@ import 'package:geolocator/geolocator.dart';
 import '../services/location_service.dart';
 import '../nearby_services_search.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:sos_incendio/screens/service_results_screen.dart';
+
 
 class FireMapScreen extends StatefulWidget {
-  const FireMapScreen({super.key}); // Simplified constructor
+  final String selectedServiceType;
+  const FireMapScreen({Key? key, required this.selectedServiceType}) : super(key: key);
   @override
   _FireMapScreenState createState() => _FireMapScreenState();
 }
@@ -19,19 +22,26 @@ class _FireMapScreenState extends State<FireMapScreen> {
   bool _locationInitialized = false;
   List<NearbyService> _nearbyServices = [];
   bool _loadingServices = false;
-  String _selectedServiceType = 'fire_station';
+  late String _selectedServiceType;
   double _searchRadius = 10000; // Default radius in meters
   final Map<String, String> _serviceTypes = {
     'Bomberos': 'fire_station',
-    'Policia': 'police',
+    'Policía': 'police',
     'Hospital': 'hospital',
     'Protección Civil': 'local_government_office',
+  };
+  final Map<String, IconData> _serviceIcons = {
+    'fire_station': Icons.local_fire_department,
+    'police': Icons.local_police,
+    'hospital': Icons.local_hospital,
+    'local_government_office': Icons.shield,
   };
 
   @override
   void initState() {
-    super.initState();
-    _initializeLocation();
+  super.initState();
+  _selectedServiceType = widget.selectedServiceType;
+  _initializeLocation();
   }
 
   void _initializeLocation() async {
@@ -52,74 +62,22 @@ class _FireMapScreenState extends State<FireMapScreen> {
   Future<void> _searchAndShowServices(LatLng position) async {
     setState(() {
       _loadingServices = true;
-      _nearbyServices = [];
     });
-  final type = _selectedServiceType;
-  final services = await searchNearbyServices(position.latitude, position.longitude, type, radius: _searchRadius.toInt());
+    final type = _selectedServiceType;
+    final services = await searchNearbyServices(position.latitude, position.longitude, type, radius: _searchRadius.toInt());
     setState(() {
-      _nearbyServices = services;
       _loadingServices = false;
     });
-    if (services.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No nearby services found.')),
-      );
-    } else {
-      showModalBottomSheet(
-        context: context,
-        builder: (context) => ListView.builder(
-          itemCount: services.length,
-          itemBuilder: (context, index) {
-            final service = services[index];
-            final distanceKm = Geolocator.distanceBetween(
-              position.latitude,
-              position.longitude,
-              service.lat,
-              service.lng,
-            ) / 1000;
-            final mapsUrl = 'https://www.google.com/maps/dir/?api=1&destination=${service.lat},${service.lng}';
-            return ListTile(
-              title: Text(service.name),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(service.address),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.directions, color: Colors.green),
-                        tooltip: 'Cómo llegar',
-                        onPressed: () async {
-                          final uri = Uri.parse(mapsUrl);
-                          if (await canLaunchUrl(uri)) {
-                            await launchUrl(uri, mode: LaunchMode.externalApplication);
-                          }
-                        },
-                      ),
-                      const SizedBox(width: 12),
-                      if (service.phoneNumber != null)
-                        GestureDetector(
-                          onTap: () async {
-                            final uri = Uri(scheme: 'tel', path: service.phoneNumber);
-                            if (await canLaunchUrl(uri)) {
-                              await launchUrl(uri);
-                            }
-                          },
-                          child: Text(
-                            'Tel: ${service.phoneNumber}',
-                            style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
-                          ),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-              trailing: Text('${distanceKm.toStringAsFixed(1)} km'),
-            );
-          },
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ServiceResultsScreen(
+          services: services,
+          selectedLat: position.latitude,
+          selectedLng: position.longitude,
+          serviceTypeName: _serviceTypes.entries.firstWhere((e) => e.value == type).key,
         ),
-      );
-    }
+      ),
+    );
   }
 
   @override
@@ -141,29 +99,45 @@ class _FireMapScreenState extends State<FireMapScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text('Service type: ', style: TextStyle(fontWeight: FontWeight.bold)),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: DropdownButton<String>(
-                        value: _selectedServiceType,
-                        items: _serviceTypes.entries.map((entry) {
-                          return DropdownMenuItem<String>(
-                            value: entry.value,
-                            child: Text(entry.key),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() {
-                              _selectedServiceType = value;
-                            });
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: _serviceTypes.entries.map((entry) {
+                      final isSelected = _selectedServiceType == entry.value;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedServiceType = entry.value;
+                          });
+                          if (_selectedLocation != null) {
+                            _searchAndShowServices(_selectedLocation!);
                           }
                         },
-                      ),
-                    ),
-                  ],
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: isSelected ? Colors.deepOrange : Colors.grey[300],
+                                shape: BoxShape.circle,
+                                boxShadow: isSelected
+                                    ? [BoxShadow(color: Colors.deepOrange.withOpacity(0.3), blurRadius: 8)]
+                                    : [],
+                              ),
+                              padding: const EdgeInsets.all(16),
+                              child: Icon(
+                                _serviceIcons[entry.value],
+                                size: 36,
+                                color: isSelected ? Colors.white : Colors.black54,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(entry.key, style: TextStyle(fontWeight: FontWeight.bold, color: isSelected ? Colors.deepOrange : Colors.black54)),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
                 SizedBox(height: 16),
                 Text('Search radius: ${(_searchRadius/1000).toStringAsFixed(1)} km'),
