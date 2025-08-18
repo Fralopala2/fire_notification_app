@@ -16,7 +16,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 	void initState() {
 		super.initState();
 		_bannerAd = BannerAd(
-			adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Test AdMob Banner ID
+			adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Official AdMob test Banner ID
 			size: AdSize.banner,
 			request: AdRequest(),
 			listener: BannerAdListener(

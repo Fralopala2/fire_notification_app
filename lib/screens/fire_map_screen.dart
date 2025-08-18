@@ -26,7 +26,7 @@ class _FireMapScreenState extends State<FireMapScreen> {
     'Bomberos': 'fire_station',
     'Policía': 'police',
     'Hospital': 'hospital',
-    'Protección Civil': 'local_government_office',
+    'Prot. Civil': 'local_government_office',
   };
   final Map<String, IconData> _serviceIcons = {
     'fire_station': Icons.local_fire_department,

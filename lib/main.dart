@@ -39,10 +39,10 @@ class ServiceTypeSelectionEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return ServiceTypeSelectionScreen(
       serviceTypes: {
-        'Bomberos': 'fire_station',
-        'Policía': 'police',
-        'Hospital': 'hospital',
-        'Protección Civil': 'local_government_office',
+    'Bomberos': 'fire_station',
+    'Policía': 'police',
+    'Hospital': 'hospital',
+    'Prot. Civil': 'local_government_office',
       },
       onTypeSelected: (type) {
         Navigator.of(context).push(
