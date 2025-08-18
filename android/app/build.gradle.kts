@@ -13,7 +13,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.fire_notification_app"
+    namespace = "com.fralopala2.sosreports"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 

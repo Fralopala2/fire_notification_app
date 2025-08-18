@@ -86,9 +86,33 @@ For more details, see the [LICENSE.md](LICENSE.md) file.
 
 ---
 
+## 📢 AdMob Application ID
+
+For security, this public repository uses the official AdMob test Application ID in `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<meta-data
+  android:name="com.google.android.gms.ads.APPLICATION_ID"
+  android:value="ca-app-pub-3940256099942544~3347511713"/>
+```
+
+This ID is recommended by Google for testing and development. **It will not generate real revenue or show production ads.**
+
+Before publishing your app to Google Play, replace the value with your own AdMob Application ID:
+
+```xml
+<meta-data
+  android:name="com.google.android.gms.ads.APPLICATION_ID"
+  android:value="YOUR_REAL_APP_ID"/>
+```
+
+You can obtain your App ID from the [AdMob console](https://admob.google.com/home/). Never publish your real App ID in public repositories.
+
+---
+
 ## 🔗 Acknowledgements
 
-- Inspired by the need to report and manage wildfire incidents effectively
+- Inspired by the need to reports and manage incidents effectively
 - Built with passion and dedication to help communities stay safe
 
 ---
