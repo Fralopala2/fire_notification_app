@@ -3,13 +3,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import '../services/location_service.dart';
 import '../nearby_services_search.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:sos_incendio/screens/service_results_screen.dart';
+import 'package:sos_reports/screens/service_results_screen.dart';
 
 
 class FireMapScreen extends StatefulWidget {
   final String selectedServiceType;
-  const FireMapScreen({Key? key, required this.selectedServiceType}) : super(key: key);
+  const FireMapScreen({super.key, required this.selectedServiceType});
   @override
   _FireMapScreenState createState() => _FireMapScreenState();
 }
@@ -20,10 +19,9 @@ class _FireMapScreenState extends State<FireMapScreen> {
   final Set<Marker> _markers = {};
   Position? _currentPosition;
   bool _locationInitialized = false;
-  List<NearbyService> _nearbyServices = [];
   bool _loadingServices = false;
   late String _selectedServiceType;
-  double _searchRadius = 10000; // Default radius in meters
+  double _searchRadius = 10000; // Default search radius in meters
   final Map<String, String> _serviceTypes = {
     'Bomberos': 'fire_station',
     'Policía': 'police',
@@ -53,21 +51,27 @@ class _FireMapScreenState extends State<FireMapScreen> {
           15,
         ),
       );
-      setState(() {
-        _locationInitialized = true;
-      });
+      if (mounted) {
+        setState(() {
+          _locationInitialized = true;
+        });
+      }
     }
   }
 
   Future<void> _searchAndShowServices(LatLng position) async {
-    setState(() {
-      _loadingServices = true;
-    });
+    if (mounted) {
+      setState(() {
+        _loadingServices = true;
+      });
+    }
     final type = _selectedServiceType;
     final services = await searchNearbyServices(position.latitude, position.longitude, type, radius: _searchRadius.toInt());
-    setState(() {
-      _loadingServices = false;
-    });
+    if (mounted) {
+      setState(() {
+        _loadingServices = false;
+      });
+    }
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => ServiceResultsScreen(
@@ -84,12 +88,7 @@ class _FireMapScreenState extends State<FireMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('SOS REPORT'),
-          ],
-        ),
+        title: const Text('SOS Reports'),
         centerTitle: true,
       ),
       body: Column(
@@ -121,7 +120,7 @@ class _FireMapScreenState extends State<FireMapScreen> {
                                 color: isSelected ? Colors.deepOrange : Colors.grey[300],
                                 shape: BoxShape.circle,
                                 boxShadow: isSelected
-                                    ? [BoxShadow(color: Colors.deepOrange.withOpacity(0.3), blurRadius: 8)]
+                                    ? [BoxShadow(color: Colors.deepOrange.withAlpha(77), blurRadius: 8)]
                                     : [],
                               ),
                               padding: const EdgeInsets.all(16),

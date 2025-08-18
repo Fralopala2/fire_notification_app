@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:sos_incendio/screens/fire_map_screen.dart';
-import 'package:sos_incendio/screens/service_type_selection_screen.dart';
+import 'package:sos_reports/screens/fire_map_screen.dart';
+import 'package:sos_reports/screens/service_type_selection_screen.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SOSIncendio',
+      title: 'SOS Reports',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: FireMapScreen(selectedServiceType: 'fire_station'),
     );

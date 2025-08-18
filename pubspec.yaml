@@ -1,5 +1,5 @@
-name: sos_incendio
-description: "SOSIncendio - Emergency wildfire alert and assistance app."
+name: sos_reports
+description: "SOS Reports - Report wildfires and quickly access nearby emergency services. Location, routes, and direct calls in one app."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

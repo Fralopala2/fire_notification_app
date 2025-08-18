@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-// Get API key from environment variables
+// Retrieve API key from environment variables
 final String googleApiKey = dotenv.env['GOOGLE_MAPS_API_KEY'] ?? '';
 
 class NearbyService {
@@ -25,7 +25,7 @@ Future<List<NearbyService>> searchNearbyServices(double lat, double lng, String 
     final data = json.decode(response.body);
     if (data['status'] == 'OK') {
       final results = data['results'] as List;
-      // Fetch phone numbers for each place
+  // Fetch phone numbers for each place using Place Details API
       return Future.wait(results.map((item) async {
         final loc = item['geometry']['location'];
         String? phone;

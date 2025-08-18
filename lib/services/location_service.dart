@@ -1,27 +1,27 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-// Function to request location permission
+// Requests location permission from the user
 Future<bool> requestLocationPermission() async {
   var status = await Permission.location.request();
   if (status.isGranted) {
     return true;
   } else if (status.isDenied) {
-    // Show a dialog or snackbar explaining why location is needed
+  // Show a dialog or snackbar explaining why location access is required
     return false;
   } else if (status.isPermanentlyDenied) {
-    // Open app settings
+  // Open app settings for permissions
     await openAppSettings();
     return false;
   }
   return false;
 }
 
-// Function to get current location
+// Gets the current location of the user
 Future<Position?> getCurrentLocation() async {
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    // Services disabled, show message
+  // Location services are disabled, show a message
     return null;
   }
   if (await requestLocationPermission()) {
@@ -30,7 +30,7 @@ Future<Position?> getCurrentLocation() async {
         desiredAccuracy: LocationAccuracy.high,
       );
     } catch (e) {
-      // Handle error
+  // Handle location error
       return null;
     }
   }
